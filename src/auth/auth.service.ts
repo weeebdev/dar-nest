@@ -3,12 +3,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { LoginRequest, LoginResponse } from 'src/shared/types';
+import { LoginRequest, LoginResponse, RegisterRequest } from 'src/shared/types';
 
-const users = [
+let users = [
   {
-    firstname: 'Adil',
-    lastname: 'Akhmetov',
+    firstname: 'Miras',
+    lastname: 'Magzom',
     avatar:
       'https://avatars.githubusercontent.com/u/48881444?s=460&u=a2317274ce4b7c57e3c87e604e55595d65d02a2a&v=4',
     username: 'magzomxzn',
@@ -44,5 +44,17 @@ export class AuthService {
     }
 
     throw new UnauthorizedException('User not found');
+  }
+
+  register(data: RegisterRequest): LoginResponse {
+    if (!data.password || !data.username) throw new BadRequestException();
+
+    const user = users.find((u) => u.username === data.username);
+
+    if (user) throw new BadRequestException('Already registered');
+
+    users.push({ ...data, token: data.firstname + data.lastname });
+
+    return this.login(data);
   }
 }

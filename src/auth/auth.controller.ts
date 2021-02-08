@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
-import { LoginRequest } from 'src/shared/types';
+import { LoginRequest, RegisterRequest } from 'src/shared/types';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -14,5 +14,10 @@ export class AuthController {
   @Get('profile')
   getProfile(@Headers('Authorization') token: string) {
     return this.authService.getProfile(token);
+  }
+
+  @Post('register')
+  postRegister(@Body() data: RegisterRequest) {
+    return this.authService.register(data);
   }
 }
