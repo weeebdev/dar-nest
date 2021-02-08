@@ -37,10 +37,8 @@ export class AuthService {
     const user = users.find((u) => u.token === token);
 
     if (user) {
-      return {
-        ...user,
-        password: '',
-      };
+      const { password, token, ...rest } = user;
+      return rest;
     }
 
     throw new UnauthorizedException('User not found');
